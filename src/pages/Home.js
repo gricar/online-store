@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SearchResults from './SearchResults';
+import SearchResults from '../components/SearchResults';
 import { getCategories } from '../services/api';
 import CartIcon from '../components/CartIcon';
 
@@ -36,6 +36,14 @@ export default class Home extends Component {
     });
   }
 
+  handleChangeCategory = ({ target }) => {
+    const selectedCategory = target.value;
+    this.setState({
+      category: selectedCategory,
+      didRequest: true,
+    });
+  }
+
   render() {
     const { query, category, didRequest, allCategories } = this.state;
     return (
@@ -43,8 +51,8 @@ export default class Home extends Component {
         <div id="cart">
           <CartIcon />
         </div>
-        <p data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
+        <div data-testid="home-initial-message">
+          <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
           <form>
             <label htmlFor="search">
               <input
@@ -62,14 +70,20 @@ export default class Home extends Component {
               Busca
             </button>
           </form>
-        </p>
+        </div>
         { didRequest && <SearchResults query={ query } category={ category } />}
         <ul>
           {
             allCategories.map(({ name, id }) => (
               <li key={ id }>
                 <label data-testid="category" htmlFor={ id }>
-                  <input type="radio" />
+                  <input
+                    id={ id }
+                    type="radio"
+                    name="category"
+                    value={ id }
+                    onChange={ this.handleChangeCategory }
+                  />
                   { name }
                 </label>
               </li>
