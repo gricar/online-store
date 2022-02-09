@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
+import SearchResults from './SearchResults';
 import { getCategories } from '../services/api';
 import CartIcon from '../components/CartIcon';
 
-export default class Home extends React.Component {
-  state = {
-    allCategories: [],
+export default class Home extends Component {
+  constructor() {
+    super();
+    this.state = {
+      query: '',
+      category: '',
+      didRequest: false,
+      allCategories: [],
+    };
   }
 
   componentDidMount() {
@@ -16,8 +23,21 @@ export default class Home extends React.Component {
     this.setState({ allCategories });
   }
 
+  onBtnClick = () => {
+    this.setState({
+      didRequest: true,
+    });
+  }
+
+  onSearchChange = ({ target }) => {
+    const search = target.value;
+    this.setState({
+      query: search,
+    });
+  }
+
   render() {
-    const { allCategories } = this.state;
+    const { query, category, didRequest, allCategories } = this.state;
     return (
       <div>
         <div id="cart">
@@ -25,7 +45,25 @@ export default class Home extends React.Component {
         </div>
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
+          <form>
+            <label htmlFor="search">
+              <input
+                type="text"
+                data-testid="query-input"
+                onChange={ this.onSearchChange }
+                name="search"
+              />
+            </label>
+            <button
+              type="button"
+              data-testid="query-button"
+              onClick={ this.onBtnClick }
+            >
+              Busca
+            </button>
+          </form>
         </p>
+        { didRequest && <SearchResults query={ query } category={ category } />}
         <ul>
           {
             allCategories.map(({ name, id }) => (
