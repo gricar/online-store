@@ -18,9 +18,9 @@ export default class Home extends React.Component {
   }
 
   onSearchChange = ({ target }) => {
-    const busca = target.value;
+    const search = target.value;
     this.setState({
-      query: busca,
+      query: search,
     });
   }
 
