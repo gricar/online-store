@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import SearchResults from './SearchResults';
+import { getCategories } from '../services/api';
+import CartIcon from '../components/CartIcon';
 
 export default class Home extends Component {
   constructor() {
@@ -8,7 +10,17 @@ export default class Home extends Component {
       query: '',
       category: '',
       didRequest: false,
+      allCategories: [],
     };
+  }
+
+  componentDidMount() {
+    this.getAllCategories();
+  }
+
+  getAllCategories = async () => {
+    const allCategories = await getCategories();
+    this.setState({ allCategories });
   }
 
   onBtnClick = () => {
@@ -25,9 +37,12 @@ export default class Home extends Component {
   }
 
   render() {
-    const { query, category, didRequest } = this.state;
+    const { query, category, didRequest, allCategories } = this.state;
     return (
       <div>
+        <div id="cart">
+          <CartIcon />
+        </div>
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
           <form>
@@ -49,6 +64,18 @@ export default class Home extends Component {
           </form>
         </p>
         { didRequest && <SearchResults query={ query } category={ category } />}
+        <ul>
+          {
+            allCategories.map(({ name, id }) => (
+              <li key={ id }>
+                <label data-testid="category" htmlFor={ id }>
+                  <input type="radio" />
+                  { name }
+                </label>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     );
   }
