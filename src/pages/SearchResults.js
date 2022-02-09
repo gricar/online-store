@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 
-class SearchResults extends React.Component {
+class SearchResults extends Component {
   constructor() {
     super();
     this.state = {
@@ -17,7 +17,6 @@ class SearchResults extends React.Component {
   fetchApi = async () => {
     const { query, category } = this.props;
     const response = await getProductsFromCategoryAndQuery(category, query);
-    console.log(response);
     this.setState({
       results: response.results,
     });
@@ -27,11 +26,11 @@ class SearchResults extends React.Component {
     const { results } = this.state;
     return (
       <div>
-        {results.map((item) => (
-          <div key={ item.id } data-testid="product">
-            <img src={ item.thumbnail } alt={ item.title } />
-            <p>{ item.title }</p>
-            <p>{ item.price }</p>
+        {results.map(({ id, thumbnail, title, price }) => (
+          <div key={ id } data-testid="product">
+            <img src={ item.thumbnail } alt={ title } />
+            <p>{ title }</p>
+            <p>{ price }</p>
           </div>
         ))}
       </div>
