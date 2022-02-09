@@ -28,7 +28,7 @@ class SearchResults extends Component {
       <div>
         {results.map(({ id, thumbnail, title, price }) => (
           <div key={ id } data-testid="product">
-            <img src={ item.thumbnail } alt={ title } />
+            <img src={ thumbnail } alt={ title } />
             <p>{ title }</p>
             <p>{ price }</p>
           </div>
