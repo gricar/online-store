@@ -2,7 +2,6 @@ import React from 'react';
 import { getCategories } from '../services/api';
 import CartIcon from '../components/CartIcon';
 
-
 export default class Home extends React.Component {
   state = {
     allCategories: [],
