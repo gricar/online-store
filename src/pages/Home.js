@@ -1,5 +1,7 @@
 import React from 'react';
 import { getCategories } from '../services/api';
+import CartIcon from '../components/CartIcon';
+
 
 export default class Home extends React.Component {
   state = {
@@ -19,6 +21,9 @@ export default class Home extends React.Component {
     const { allCategories } = this.state;
     return (
       <div>
+        <div id="cart">
+          <CartIcon />
+        </div>
         <p data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
