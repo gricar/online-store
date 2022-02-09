@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import SearchResults from './SearchResults';
 
-export default class Home extends React.Component {
+export default class Home extends Component {
   constructor() {
     super();
     this.state = {
       query: '',
       category: '',
-      requestDid: false,
+      didRequest: false,
     };
   }
 
   onBtnClick = () => {
     this.setState({
-      requestDid: true,
+      didRequest: true,
     });
   }
 
@@ -25,7 +25,7 @@ export default class Home extends React.Component {
   }
 
   render() {
-    const { query, category, requestDid } = this.state;
+    const { query, category, didRequest } = this.state;
     return (
       <div>
         <p data-testid="home-initial-message">
@@ -48,7 +48,7 @@ export default class Home extends React.Component {
             </button>
           </form>
         </p>
-        { requestDid && <SearchResults query={ query } category={ category } />}
+        { didRequest && <SearchResults query={ query } category={ category } />}
       </div>
     );
   }
