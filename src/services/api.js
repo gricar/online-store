@@ -18,3 +18,26 @@ export async function getDetailsFromProductId(productId) {
   const productInfoJson = await productInfo.json();
   return productInfoJson;
 }
+
+export async function getCartItems() {
+  return JSON.parse(localStorage.getItem('cart'));
+}
+
+export async function saveCartItem(itemObj) {
+  if (!JSON.parse(localStorage.getItem('cart'))) {
+    localStorage.setItem('cart', JSON.stringify([]));
+  }
+  const atualCart = await getCartItems();
+  const exist = await atualCart.some((item) => item.id === itemObj.id);
+  if (exist) {
+    const addCountItem = await atualCart.filter((item) => item.id === itemObj.id);
+    const newArray = await atualCart.filter((item) => item.id !== itemObj.id);
+    addCountItem[0].count += 1;
+    const result = [...newArray, addCountItem[0]];
+    localStorage.setItem('cart', JSON.stringify(result));
+  } else {
+    itemObj.count = 1;
+    const final = [...atualCart, itemObj];
+    localStorage.setItem('cart', JSON.stringify(final));
+  }
+}
