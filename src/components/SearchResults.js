@@ -27,7 +27,12 @@ class SearchResults extends Component {
     const { results } = this.state;
     return (
       <div>
-        {results.map(({ id, thumbnail, title, price }) => (
+        {results.map(({ id,
+          thumbnail,
+          title,
+          price,
+          shipping,
+        }) => (
           <Link
             to={ `/product-details/${id}` }
             data-testid="product-detail-link"
@@ -36,6 +41,7 @@ class SearchResults extends Component {
             <div data-testid="product">
               <img src={ thumbnail } alt={ title } />
               <p>{ title }</p>
+              {shipping.free_shipping && <p data-testid="free-shipping">Frete Grátis</p>}
               <p>{ price }</p>
             </div>
           </Link>
