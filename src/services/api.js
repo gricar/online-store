@@ -19,7 +19,6 @@ export async function getDetailsFromProductId(productId) {
   return productInfoJson;
 }
 
-<<<<<<< HEAD
 export function getCartItems() {
   return JSON.parse(localStorage.getItem('cart'));
 }
@@ -33,21 +32,6 @@ export function saveCartItem(itemObj) {
   if (exist) {
     const addCountItem = atualCart.filter((item) => item.id === itemObj.id);
     const newArray = atualCart.filter((item) => item.id !== itemObj.id);
-=======
-export async function getCartItems() {
-  return JSON.parse(localStorage.getItem('cart'));
-}
-
-export async function saveCartItem(itemObj) {
-  if (!JSON.parse(localStorage.getItem('cart'))) {
-    localStorage.setItem('cart', JSON.stringify([]));
-  }
-  const atualCart = await getCartItems();
-  const exist = await atualCart.some((item) => item.id === itemObj.id);
-  if (exist) {
-    const addCountItem = await atualCart.filter((item) => item.id === itemObj.id);
-    const newArray = await atualCart.filter((item) => item.id !== itemObj.id);
->>>>>>> ec0eaf3e8b070f648f84ac69137db9adab2cbd0b
     addCountItem[0].count += 1;
     const result = [...newArray, addCountItem[0]];
     localStorage.setItem('cart', JSON.stringify(result));
