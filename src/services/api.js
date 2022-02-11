@@ -3,7 +3,6 @@ export async function getCategories() {
   const categoriesJson = await categories.json();
   return categoriesJson;
 }
-
 export async function getProductsFromCategoryAndQuery(categoryId, query) {
   if (!categoryId && !query) {
     throw new Error('Insira pelo menos um elemento');
@@ -12,7 +11,6 @@ export async function getProductsFromCategoryAndQuery(categoryId, query) {
   const queryCategoryJson = await fetchQueryCategory.json();
   return (queryCategoryJson);
 }
-
 export async function getDetailsFromProductId(productId) {
   const productInfo = await fetch(`https://api.mercadolibre.com/items/${productId}`);
   const productInfoJson = await productInfo.json();
