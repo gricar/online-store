@@ -41,7 +41,8 @@ class SearchResults extends Component {
                 <img src={ item.thumbnail } alt={ item.title } />
                 <p>{ item.title }</p>
                 <p>{ item.price }</p>
-                {item.shipping.free_shipping && <p data-testid="free-shipping">Frete Grátis</p>}
+                {item.shipping.free_shipping
+                && <p data-testid="free-shipping">Frete Grátis</p>}
               </div>
             </Link>
             <BtnAddToCart
