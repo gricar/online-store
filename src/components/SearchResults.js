@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  getProductsFromCategoryAndQuery, saveCartItem,
+  getProductsFromCategoryAndQuery,
 } from '../services/api';
+import { saveCartItem } from '../services/LocalStorageCart';
 import BtnAddToCart from './BtnAddToCart';
 
 class SearchResults extends Component {

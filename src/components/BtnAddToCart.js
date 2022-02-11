@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { saveCartItem } from '../services/api';
+import { saveCartItem } from '../services/LocalStorageCart';
 
 export default class BtnAddToCart extends Component {
   onBtnClick = () => {
