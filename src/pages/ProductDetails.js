@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CartIcon from '../components/CartIcon';
 import { getDetailsFromProductId, saveCartItem } from '../services/api';
+import RatingProduct from '../components/RatingProduct';
 
 export default class ProductDetails extends Component {
   state = {
@@ -44,6 +45,7 @@ export default class ProductDetails extends Component {
             Adicionar ao Carrinho
           </button>
         </section>
+        <RatingProduct />
       </div>
     );
   }
