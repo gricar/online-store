@@ -28,10 +28,10 @@ export function saveCartItem(itemObj) {
   const atualCart = getCartItems();
   const exist = atualCart.some((item) => item.id === itemObj.id);
   if (exist) {
-    const addCountItem = atualCart.filter((item) => item.id === itemObj.id);
-    const newArray = atualCart.filter((item) => item.id !== itemObj.id);
-    addCountItem[0].count += 1;
-    const result = [...newArray, addCountItem[0]];
+    const addCountItem = atualCart.find((item) => item.id === itemObj.id);
+    const newArray = atualCart.find((item) => item.id !== itemObj.id);
+    addCountItem.count += 1;
+    const result = [...newArray, addCountItem];
     localStorage.setItem('cart', JSON.stringify(result));
   } else {
     itemObj.count = 1;
