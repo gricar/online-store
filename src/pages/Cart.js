@@ -7,8 +7,17 @@ export default class Cart extends Component {
     cart: [],
   }
 
+<<<<<<< HEAD
   componentDidMount() {
     const cartItems = getCartItems();
+=======
+  async componentDidMount() {
+    await this.fetchCart();
+  }
+
+  fetchCart = async () => {
+    const cartItems = await getCartItems();
+>>>>>>> ec0eaf3e8b070f648f84ac69137db9adab2cbd0b
     this.setState({
       cart: cartItems,
     });
