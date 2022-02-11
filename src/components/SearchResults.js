@@ -31,20 +31,20 @@ class SearchResults extends Component {
     const { results } = this.state;
     return (
       <div>
-        {results.map((item, { id, thumbnail, title, price }) => (
-          <section key={ id }>
+        {results.map((item) => (
+          <section key={ item.id }>
             <Link
-              to={ `/product-details/${id}` }
+              to={ `/product-details/${item.id}` }
               data-testid="product-detail-link"
             >
               <div data-testid="product">
-                <img src={ thumbnail } alt={ title } />
-                <p>{ title }</p>
-                <p>{ price }</p>
+                <img src={ item.thumbnail } alt={ item.title } />
+                <p>{ item.title }</p>
+                <p>{ item.price }</p>
               </div>
             </Link>
             <BtnAddToCart
-              productId={ id }
+              productId={ item.id }
               itemObj={ item }
               itemsCart={ saveCartItem }
             />
@@ -58,9 +58,6 @@ class SearchResults extends Component {
 SearchResults.propTypes = {
   query: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
-  itemObj: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 export default SearchResults;
