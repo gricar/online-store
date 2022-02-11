@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import {
+  getProductsFromCategoryAndQuery, saveCartItem,
+} from '../services/api';
+import BtnAddToCart from './BtnAddToCart';
 
 class SearchResults extends Component {
   constructor() {
@@ -27,18 +30,24 @@ class SearchResults extends Component {
     const { results } = this.state;
     return (
       <div>
-        {results.map(({ id, thumbnail, title, price }) => (
-          <Link
-            to={ `/product-details/${id}` }
-            data-testid="product-detail-link"
-            key={ id }
-          >
-            <div data-testid="product">
-              <img src={ thumbnail } alt={ title } />
-              <p>{ title }</p>
-              <p>{ price }</p>
-            </div>
-          </Link>
+        {results.map((item, { id, thumbnail, title, price }) => (
+          <section key={ id }>
+            <Link
+              to={ `/product-details/${id}` }
+              data-testid="product-detail-link"
+            >
+              <div data-testid="product">
+                <img src={ thumbnail } alt={ title } />
+                <p>{ title }</p>
+                <p>{ price }</p>
+              </div>
+            </Link>
+            <BtnAddToCart
+              productId={ id }
+              itemObj={ item }
+              itemsCart={ saveCartItem }
+            />
+          </section>
         ))}
       </div>
     );
@@ -48,6 +57,9 @@ class SearchResults extends Component {
 SearchResults.propTypes = {
   query: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
+  itemObj: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default SearchResults;

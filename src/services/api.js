@@ -3,7 +3,6 @@ export async function getCategories() {
   const categoriesJson = await categories.json();
   return categoriesJson;
 }
-
 export async function getProductsFromCategoryAndQuery(categoryId, query) {
   if (!categoryId && !query) {
     throw new Error('Insira pelo menos um elemento');
@@ -12,7 +11,6 @@ export async function getProductsFromCategoryAndQuery(categoryId, query) {
   const queryCategoryJson = await fetchQueryCategory.json();
   return (queryCategoryJson);
 }
-
 export async function getDetailsFromProductId(productId) {
   const productInfo = await fetch(`https://api.mercadolibre.com/items/${productId}`);
   const productInfoJson = await productInfo.json();
@@ -30,10 +28,10 @@ export function saveCartItem(itemObj) {
   const atualCart = getCartItems();
   const exist = atualCart.some((item) => item.id === itemObj.id);
   if (exist) {
-    const addCountItem = atualCart.filter((item) => item.id === itemObj.id);
-    const newArray = atualCart.filter((item) => item.id !== itemObj.id);
-    addCountItem[0].count += 1;
-    const result = [...newArray, addCountItem[0]];
+    const addCountItem = atualCart.find((item) => item.id === itemObj.id);
+    const newArray = atualCart.find((item) => item.id !== itemObj.id);
+    addCountItem.count += 1;
+    const result = [...newArray, addCountItem];
     localStorage.setItem('cart', JSON.stringify(result));
   } else {
     itemObj.count = 1;
