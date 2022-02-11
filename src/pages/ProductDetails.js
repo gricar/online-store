@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CartIcon from '../components/CartIcon';
-import { getDetailsFromProductId, saveCartItem } from '../services/api';
+import { getDetailsFromProductId } from '../services/api';
+import { saveCartItem } from '../services/LocalStorageCart';
 import RatingProduct from '../components/RatingProduct';
 
 export default class ProductDetails extends Component {

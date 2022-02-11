@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
 import { ReactComponent as ShoppingCart } from '../images/ShoppingCart.svg';
-import { getCartItems } from '../services/api';
+import { getCartItems, removeCartItem, saveCartItem } from '../services/LocalStorageCart';
 
 export default class Cart extends Component {
   state = {
     cart: [],
+    cartIsempty: true,
   }
 
   componentDidMount() {
+    this.updateCart();
+  }
+
+  updateCart = () => {
     const cartItems = getCartItems();
     this.setState({
       cart: cartItems,
+    }, () => {
+      if (cartItems.length > 0) {
+        this.setState({
+          cartIsempty: false,
+        });
+      }
     });
   }
 
   render() {
-    const { cart } = this.state;
+    const { cart, cartIsempty } = this.state;
     return (
       <>
         <header>
@@ -23,16 +34,39 @@ export default class Cart extends Component {
           - Carrinho de compras
         </header>
         <section>
-          {!cart
+          {cartIsempty
             ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
-            : cart.map(({ id, title, thumbnail, count }) => (
-              <div key={ id }>
-                <img src={ thumbnail } alt={ title } />
-                <h3 data-testid="shopping-cart-product-name">{ title }</h3>
+            : cart.map((item) => (
+              <div key={ item.id }>
+                <img src={ item.thumbnail } alt={ item.title } />
+                <h3 data-testid="shopping-cart-product-name">{ item.title }</h3>
                 <p data-testid="shopping-cart-product-quantity">
                   Quantidade:
-                  { count }
+                  { item.count }
                 </p>
+                <button
+                  data-testid="product-decrease-quantity"
+                  type="button"
+                  value={ item.id }
+                  onClick={ () => { removeCartItem(item, false); this.updateCart(); } }
+                >
+                  -
+                </button>
+                <button
+                  data-testid="product-increase-quantity"
+                  type="button"
+                  value={ item.id }
+                  onClick={ () => { saveCartItem(item); this.updateCart(); } }
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  value={ item.id }
+                  onClick={ () => { removeCartItem(item, true); this.updateCart(); } }
+                >
+                  X
+                </button>
               </div>
             )) }
         </section>
