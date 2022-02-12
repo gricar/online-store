@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchResults from '../components/SearchResults';
 import { getCategories } from '../services/api';
+import { getCartItems } from '../services/LocalStorageCart';
 import CartIcon from '../components/CartIcon';
 
 export default class Home extends Component {
@@ -11,11 +12,28 @@ export default class Home extends Component {
       category: '',
       didRequest: false,
       allCategories: [],
+      quantity: 0,
+      cartIsempty: true,
     };
   }
 
   componentDidMount() {
     this.getAllCategories();
+    this.updateCart();
+  }
+
+  updateCart = () => {
+    const cartItems = getCartItems();
+    const cartQuantity = cartItems.reduce((acc, curr) => curr.count + acc, 0);
+    this.setState({
+      quantity: cartQuantity,
+    }, () => {
+      if (cartQuantity > 0) {
+        this.setState({
+          cartIsempty: false,
+        });
+      }
+    });
   }
 
   getAllCategories = async () => {
@@ -45,11 +63,16 @@ export default class Home extends Component {
   }
 
   render() {
-    const { query, category, didRequest, allCategories } = this.state;
+    const { query,
+      category,
+      didRequest,
+      allCategories,
+      quantity,
+      cartIsempty } = this.state;
     return (
       <div>
         <div id="cart">
-          <CartIcon />
+          <CartIcon empty={ cartIsempty } quantity={ quantity } />
         </div>
         <div data-testid="home-initial-message">
           <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
@@ -71,7 +94,13 @@ export default class Home extends Component {
             </button>
           </form>
         </div>
-        { didRequest && <SearchResults query={ query } category={ category } />}
+        { didRequest && <SearchResults
+          query={ query }
+          category={ category }
+          empty={ cartIsempty }
+          quantity={ quantity }
+          updateCart={ this.updateCart }
+        />}
         <ul>
           {
             allCategories.map(({ name, id }) => (
