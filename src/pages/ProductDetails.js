@@ -2,17 +2,34 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CartIcon from '../components/CartIcon';
 import { getDetailsFromProductId } from '../services/api';
-import { saveCartItem } from '../services/LocalStorageCart';
+import { getCartItems, saveCartItem } from '../services/LocalStorageCart';
 import RatingProduct from '../components/RatingProduct';
+import BtnAddToCart from '../components/BtnAddToCart';
 
 export default class ProductDetails extends Component {
   state = {
-    productInfo: '',
-  }
+    productInfo: {},
+    quantity: 0,
+    empty: true,
+  };
 
   componentDidMount() {
     const { match: { params: { productId } } } = this.props;
     this.fetchApi(productId);
+  }
+
+  updateCart = () => {
+    const cartItems = getCartItems();
+    const cartQuantity = cartItems.reduce((acc, curr) => curr.count + acc, 0);
+    this.setState({
+      quantity: cartQuantity,
+    }, () => {
+      if (cartQuantity > 0) {
+        this.setState({
+          empty: false,
+        });
+      }
+    });
   }
 
   onBtnClick = async () => {
@@ -21,31 +38,37 @@ export default class ProductDetails extends Component {
   }
 
   fetchApi = async (productId) => {
+    this.updateCart();
     const productInfo = await getDetailsFromProductId(productId);
     this.setState({ productInfo });
   }
 
   render() {
-    const {
-      productInfo: { title, thumbnail, price },
-    } = this.state;
+    const { productInfo, empty, quantity } = this.state;
     return (
       <div>
         <div id="cart">
-          <CartIcon />
+          <CartIcon empty={ empty } quantity={ quantity } />
         </div>
-        <section>
-          <img src={ thumbnail } alt={ title } />
-          <h3 data-testid="product-detail-name">{ title }</h3>
-          <p>{ `R$ ${price}` }</p>
-          <button
-            type="button"
-            onClick={ this.onBtnClick }
-            data-testid="product-detail-add-to-cart"
-          >
-            Adicionar ao Carrinho
-          </button>
-        </section>
+        {/* Apenas renderiza as informações do produto quando termina o fetch na API */}
+        {productInfo.id
+          ? (
+            <section>
+              <img src={ productInfo.thumbnail } alt={ productInfo.title } />
+              <h3 data-testid="product-detail-name">{ productInfo.title }</h3>
+              <p>{ `R$ ${productInfo.price}` }</p>
+              <BtnAddToCart
+                productId={ productInfo.id }
+                itemObj={ productInfo }
+                itemsCart={ saveCartItem }
+                empty={ empty }
+                quantity={ quantity }
+                getCart={ () => { this.updateCart(); } }
+                dataTestID="product-detail-add-to-cart"
+              />
+            </section>)
+          : null}
+
         <RatingProduct />
       </div>
     );
