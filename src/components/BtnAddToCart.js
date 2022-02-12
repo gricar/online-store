@@ -9,15 +9,15 @@ export default class BtnAddToCart extends Component {
   }
 
   render() {
-    const { productId } = this.props;
+    const { productId, getCart, dataTestID } = this.props;
 
     return (
       <div>
         <button
           type="button"
-          data-testid="product-add-to-cart"
+          data-testid={ dataTestID }
           value={ productId }
-          onClick={ this.onBtnClick }
+          onClick={ () => { this.onBtnClick(); getCart(); } }
         >
           Adicionar ao carrinho
         </button>
@@ -27,7 +27,9 @@ export default class BtnAddToCart extends Component {
 }
 
 BtnAddToCart.propTypes = {
+  dataTestID: PropTypes.string.isRequired,
   productId: PropTypes.string.isRequired,
+  getCart: PropTypes.func.isRequired,
   itemObj: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
