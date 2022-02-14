@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ReactComponent as ShoppingCart } from '../images/ShoppingCart.svg';
 import { getCartItems, removeCartItem, saveCartItem } from '../services/LocalStorageCart';
+import EndPurchaseButton from '../components/EndPurchaseButton';
 
 export default class Cart extends Component {
   state = {
@@ -32,6 +33,7 @@ export default class Cart extends Component {
         <header>
           <ShoppingCart width="50" />
           - Carrinho de compras
+          <EndPurchaseButton />
         </header>
         <section>
           {cartIsempty

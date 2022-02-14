@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
+import { getCartItems } from '../services/LocalStorageCart';
 
 export default class FinalPage extends Component {
-  /* state ={
-    checkoutEmail: '',
-    checkoutName: '',
-    checkoutPhone: '',
-    checkoutAddress: '',
-    checkoutCep: '',
-    checkoutCpf: '',
+  state ={
+    cart: [],
+  }
 
-  } */
+  componentDidMount() {
+    this.updateCart();
+  }
+
+  updateCart = () => {
+    const cartItems = getCartItems();
+    this.setState({
+      cart: cartItems,
+    });
+  }
 
   render() {
+    const { cart } = this.state;
     return (
       <div>
+        <div>
+          { cart.map((item) => (
+            <div key={ item.id }>
+              <img src={ item.thumbnail } alt={ item.title } />
+              <h3 data-testid="shopping-cart-product-name">{ item.title }</h3>
+              <p data-testid="shopping-cart-product-quantity">
+                Quantidade:
+                { item.count }
+              </p>
+            </div>
+          ))}
+        </div>
         <form>
           <input
             data-testid="checkout-fullname"
