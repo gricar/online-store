@@ -26,6 +26,8 @@ export default class Cart extends Component {
     });
   }
 
+  verifyQuantity = (available, count) => available <= count
+
   render() {
     const { cart, cartIsempty } = this.state;
     return (
@@ -43,7 +45,6 @@ export default class Cart extends Component {
                 <img src={ item.thumbnail } alt={ item.title } />
                 <h3 data-testid="shopping-cart-product-name">{ item.title }</h3>
                 <p data-testid="shopping-cart-product-quantity">
-                  Quantidade:
                   { item.count }
                 </p>
                 <button
@@ -57,6 +58,7 @@ export default class Cart extends Component {
                 <button
                   data-testid="product-increase-quantity"
                   type="button"
+                  disabled={ this.verifyQuantity(item.available_quantity, item.count) }
                   value={ item.id }
                   onClick={ () => { saveCartItem(item); this.updateCart(); } }
                 >

@@ -11,7 +11,9 @@ export function saveCartItem(itemObj) {
   const exist = atualCart.some((item) => item.id === itemObj.id);
   if (exist) {
     const addCountItem = atualCart.find((item) => item.id === itemObj.id);
-    addCountItem.count += 1;
+    if (addCountItem.available_quantity > addCountItem.count) {
+      addCountItem.count += 1;
+    }
     localStorage.setItem('cart', JSON.stringify(atualCart));
   } else {
     itemObj.count = 1;
