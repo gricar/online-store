@@ -29,6 +29,7 @@ class SearchResults extends Component {
 
   render() {
     const { results } = this.state;
+    const { empty, quantity, updateCart } = this.props;
     return (
       <div>
         {results.map((item) => (
@@ -49,6 +50,10 @@ class SearchResults extends Component {
               productId={ item.id }
               itemObj={ item }
               itemsCart={ saveCartItem }
+              empty={ empty }
+              quantity={ quantity }
+              getCart={ updateCart }
+              dataTestID="product-add-to-cart"
             />
           </section>
         ))}
@@ -58,8 +63,11 @@ class SearchResults extends Component {
 }
 
 SearchResults.propTypes = {
+  updateCart: PropTypes.func.isRequired,
   query: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
+  empty: PropTypes.bool.isRequired,
+  quantity: PropTypes.number.isRequired,
 };
 
 export default SearchResults;
